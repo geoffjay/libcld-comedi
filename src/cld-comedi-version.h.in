@@ -1,0 +1,92 @@
+/* cld-version.h.in
+ *
+ * Copyright (C) 2013-2017 Geoff Johnson <geoff.jay@gmail.com.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef CLD_COMEDI_VERSION_H
+#define CLD_COMEDI_VERSION_H
+
+/**
+ * SECTION:cld-version
+ * @short_description: Cld version checking
+ *
+ * Cld provides macros to check the version of the library at compile-time
+ */
+
+/**
+ * CLD_COMEDI_MAJOR_VERSION:
+ *
+ * Cldl major version component (e.g. 1 if %CLD_COMEDI_VERSION is 1.2.3)
+ */
+#define CLD_COMEDI_MAJOR_VERSION              (@CLD_COMEDI_MAJOR_VERSION@)
+
+/**
+ * CLD_COMEDI_MINOR_VERSION:
+ *
+ * Cldl minor version component (e.g. 2 if %CLD_COMEDI_VERSION is 1.2.3)
+ */
+#define CLD_COMEDI_MINOR_VERSION              (@CLD_COMEDI_MINOR_VERSION@)
+
+/**
+ * CLD_COMEDI_MICRO_VERSION:
+ *
+ * Cldl micro version component (e.g. 3 if %CLD_COMEDI_VERSION is 1.2.3)
+ */
+#define CLD_COMEDI_MICRO_VERSION              (@CLD_COMEDI_MICRO_VERSION@)
+
+/**
+ * CLD_COMEDI_VERSION
+ *
+ * Cldl version.
+ */
+#define CLD_COMEDI_VERSION                    (@CLD_COMEDI_VERSION@)
+
+/**
+ * CLD_COMEDI_VERSION_S:
+ *
+ * CldComedi version, encoded as a string, useful for printing and
+ * concatenation.
+ */
+#define CLD_COMEDI_VERSION_S                  "@CLD_COMEDI_VERSION@"
+
+#define CLD_COMEDI_ENCODE_VERSION(major,minor,micro) \
+        ((major) << 24 | (minor) << 16 | (micro) << 8)
+
+/**
+ * CLD_COMEDI_VERSION_HEX:
+ *
+ * CldComedi version, encoded as an hexadecimal number, useful for
+ * integer comparisons.
+ */
+#define CLD_COMEDI_VERSION_HEX \
+        (CLD_COMEDI_ENCODE_VERSION (CLD_COMEDI_MAJOR_VERSION, CLD_COMEDI_MINOR_VERSION, CLD_COMEDI_MICRO_VERSION))
+
+/**
+ * CLD_COMEDI_CHECK_VERSION:
+ * @major: required major version
+ * @minor: required minor version
+ * @micro: required micro version
+ *
+ * Compile-time version checking. Evaluates to %TRUE if the version
+ * of cld is greater than the required one.
+ */
+#define CLD_COMEDI_CHECK_VERSION(major,minor,micro)   \
+        (CLD_COMEDI_MAJOR_VERSION > (major) || \
+         (CLD_COMEDI_MAJOR_VERSION == (major) && CLD_COMEDI_MINOR_VERSION > (minor)) || \
+         (CLD_COMEDI_MAJOR_VERSION == (major) && CLD_COMEDI_MINOR_VERSION == (minor) && \
+          CLD_COMEDI_MICRO_VERSION >= (micro)))
+
+#endif /* CLD_COMEDI_VERSION_H *

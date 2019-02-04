@@ -38,6 +38,8 @@ add_project_arguments([
   ['--vapidir', join_paths(meson.current_source_dir(), 'vapi')],
 ], language: 'vala')
 
+libcld_dep = dependency('cld-1.0')
+
 libgio_dep = dependency('gio-2.0')
 libgee_dep = dependency('gee-0.8')
 libxml_dep = dependency('libxml-2.0')

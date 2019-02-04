@@ -2,10 +2,10 @@ libcld_comedi_header_subdir = 'cld-' + apiversion
 libcld_comedi_header_dir = join_paths(includedir, libcld_comedi_header_subdir)
 
 version_data = configuration_data()
-version_data.set('CLD_MAJOR_VERSION', cld_version_major)
-version_data.set('CLD_MINOR_VERSION', cld_version_minor)
-version_data.set('CLD_MICRO_VERSION', cld_version_micro)
-version_data.set('CLD_VERSION', meson.project_version())
+version_data.set('CLD_COMEDI_MAJOR_VERSION', cld_version_major)
+version_data.set('CLD_COMEDI_MINOR_VERSION', cld_version_minor)
+version_data.set('CLD_COMEDI_MICRO_VERSION', cld_version_micro)
+version_data.set('CLD_COMEDI_VERSION', meson.project_version())
 version_data.set10('ENABLE_TRACING', get_option('enable_tracing'))
 
 cld_comedi_version_h = configure_file(
@@ -15,15 +15,7 @@ cld_comedi_version_h = configure_file(
         install: true,
   configuration: version_data)
 
-cld_comedi_debug_h = configure_file(
-          input: 'cld-comedi-debug.h.in',
-         output: 'cld-comedi-debug.h',
-    install_dir: libcld_comedi_header_dir,
-        install: true,
-  configuration: version_data)
-
 libcld_comedi_generated_headers = [
-  cld_comedi_debug_h,
   cld_comedi_version_h,
 ]
 
@@ -33,6 +25,7 @@ libcld_comedi_deps = [
   libxml_dep,
   libjson_glib_dep,
   libcomedi_dep,
+  libcld_dep,
   linux_dep,
   posix_dep,
   cc.find_library('m', required: false),
@@ -44,6 +37,8 @@ libcld_comedi_sources = [
   'cld-comedi-device.vala',
   'cld-comedi-factory.vala',
   'cld-comedi-task.vala',
+  'cld-comedi-task-polling.vala',
+  'cld-comedi-task-streaming.vala',
 ]
 
 if libdir == '' or includedir == ''
@@ -51,12 +46,12 @@ if libdir == '' or includedir == ''
 endif
 
 libcld_comedi = library('cld-' + apiversion, libcld_comedi_sources,
-  link_depends: 'cld.map',
-     link_args: [ '-Wl,--version-script,' + join_paths(meson.current_source_dir(), 'cld.map'), '-lcomedi' ],
+  link_depends: 'cld-comedi.map',
+     link_args: [ '-Wl,--version-script,' + join_paths(meson.current_source_dir(), 'cld-comedi.map'), '-lcomedi' ],
    vala_header: 'cld.h',
      vala_vapi: 'cld-@0@.vapi'.format(apiversion),
       vala_gir: 'Cld-@0@.gir'.format(apiversion),
-  dependencies: libcld_deps,
+  dependencies: libcld_comedi_deps,
      soversion: soversion,
        version: libversion,
        install: true,

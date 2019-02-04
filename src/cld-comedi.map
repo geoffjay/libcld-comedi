@@ -1,0 +1,6 @@
+{
+global:
+    cld_comedi_*;
+local:
+    *;
+};
